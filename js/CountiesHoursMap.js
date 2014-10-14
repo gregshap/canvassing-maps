@@ -25,7 +25,22 @@ var canvassMap;
   var sourceFile = 'FLAT_DATA_MiniVAN_Canvasses_20140906-20140907.csv';
 
 
-  var MAP_HOUR = '44';
+  function getQueryVariable(variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split('=');
+          if (decodeURIComponent(pair[0]) == variable) {
+              console.log('Query variable: %s=%s',variable,decodeURIComponent(pair[1]));
+              return decodeURIComponent(pair[1]);
+          }
+      }
+      console.log('Query variable %s not found', variable);
+  }
+
+  
+
+  var MAP_HOUR = getQueryVariable("hour");
   var rowName = 'id';
   var colName = 'hour' + MAP_HOUR;
 
