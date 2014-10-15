@@ -17,12 +17,12 @@ var canvassMap;
   var path = d3.geo.path()
       .projection(projection);
 
-  var svg = d3.select("body").append("svg")
+  var svg = d3.select("#canvass-map").append("svg")
       .attr("width", width)
       .attr("height", height);
 
 
-  var sourceFile = 'FLAT_DATA_MiniVAN_Canvasses_20140906-20140907.csv';
+  var sourceFile = 'CanvassingMapData_20141010-20141012.csv';
 
 
   function getQueryVariable(variable) {
@@ -42,7 +42,7 @@ var canvassMap;
 
   var MAP_HOUR = getQueryVariable("hour");
   var rowName = 'id';
-  var colName = 'hour' + MAP_HOUR;
+  var colName = 'Hour' + MAP_HOUR;
 
 
 
