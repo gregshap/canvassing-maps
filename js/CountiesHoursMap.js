@@ -25,22 +25,24 @@ var canvassMap;
   var sourceFile = 'CanvassingMapData_20141010-20141012.csv';
 
 
-  function getQueryVariable(variable) {
+  function getQueryVariable(queryStringParamTarget) {
       var query = window.location.search.substring(1);
       var vars = query.split('&');
       for (var i = 0; i < vars.length; i++) {
+          
           var pair = vars[i].split('=');
-          if (decodeURIComponent(pair[0]) == variable) {
-              console.log('Query variable: %s=%s',variable,decodeURIComponent(pair[1]));
+          if (decodeURIComponent(pair[0]).toUpperCase() === queryStringParamTarget.toUpperCase()) {
+              console.log('Query variable: %s=%s',queryStringParamTarget,decodeURIComponent(pair[1]));
               return decodeURIComponent(pair[1]);
           }
       }
-      console.log('Query variable %s not found', variable);
+      console.log('Query variable %s not found', queryStringParamTarget);
   }
 
   
-
-  var MAP_HOUR = getQueryVariable("hour");
+  //Get the hour from query string, default to Total
+  var MAP_HOUR = getQueryVariable("hour") || "Total"; 
+  
   var rowName = 'id';
   var colName = 'Hour' + MAP_HOUR;
 
