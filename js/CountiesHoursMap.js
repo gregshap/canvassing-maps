@@ -22,7 +22,7 @@ var canvassMap;
       .attr("height", height);
 
 
-  var sourceFile = 'CanvassingMapData_20141010-20141012.csv';
+  var SOURCE_FILE = 'CanvassingMapData_20141010-20141012.csv';
 
 
   function getQueryVariable(queryStringParamTarget) {
@@ -39,18 +39,55 @@ var canvassMap;
       console.log('Query variable %s not found', queryStringParamTarget);
   }
 
+
+
   
   //Get the hour from query string, default to Total
-  var MAP_HOUR = getQueryVariable("hour") || "Total"; 
+  var mapHour = getQueryVariable("hour") || "Total"; 
   
   var rowName = 'id';
-  var colName = 'Hour' + MAP_HOUR;
+  var colName = 'Hour' + mapHour;
 
+
+  //This represents 'Hour 0'
+  var MAP_START_TIME = "2014-10-10 17:00:00";
+  var MAP_START_TIME_PARSE_FORMAT = "YYYY-MM-DD HH:mm:ss";
+  var mapStartMoment = moment(MAP_START_TIME, MAP_START_TIME_PARSE_FORMAT);
+
+  //Initialze the end moment to the weekend hour 0, and we'll add hours appropriately
+  var mapEndMoment = moment(MAP_START_TIME, MAP_START_TIME_PARSE_FORMAT);
+
+
+  //Add hours to start and end dates based on which time segment of data we're showing
+  //For the 'total' view, it's the whole weekend from hour 0 til the end of the weekend
+  if (mapHour.toUpperCase() == "total".toUpperCase()) {
+
+    var NUM_HOURS_IN_WEEKEND = 54
+    mapStartMoment.add(0,'hours'); //unbreak this for Total
+    mapEndMoment.add(NUM_HOURS_IN_WEEKEND,'hours');
+  
+  } else{
+  
+    mapStartMoment.add(parseInt(mapHour),'hours'); 
+    mapEndMoment.add(parseInt(mapHour) + 1,'hours');
+  
+  }
+
+  //How do we want to display dates?
+  var DISPLAY_DATE_FULL_FORMAT = "dddd, MMMM Do YYYY, h:mm:ss a"; //Day of wk, Full date and time
+  var DISPLAY_DATE_MEDIUM_FORMAT = "dddd, MMMM Do, h:mm:ss a"; //Day of wk, date, time
+  var DISPLAY_DATE_SHORT_FORMAT = "dddd h:mma"; //Day of wk and time
+
+  //Set the current time segment
+  var hourDisplayDiv = d3.select("#time-segment")
+                          .text(mapStartMoment.format(DISPLAY_DATE_SHORT_FORMAT) 
+                            + " to " + 
+                            mapEndMoment.format(DISPLAY_DATE_SHORT_FORMAT));
 
 
   queue()
       .defer(d3.json, "../data/us.json")
-      .defer(d3.csv, "../data/" + sourceFile, function(d) { 
+      .defer(d3.csv, "../data/" + SOURCE_FILE, function(d) { 
                                               var rateLog = Math.log(d[colName]);
                                               rateById.set(d[rowName], +rateLog); })
       .await(ready);
