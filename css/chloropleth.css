@@ -1,10 +1,24 @@
+#canvass-map {
+  width: 970px;
+  margin: 0 auto;
+  margin-top: 0px;
+}
+
+#time-segment {
+  text-align: center;
+  margin-top: 80px;
+  font-family: sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 24px;
+  color: #444;
+}
 
 .counties {
   fill: none;
 }
 
 body{
-   background:rgb(240,200,140);    
+   background: #ddd;    
 }
 
 .states {
