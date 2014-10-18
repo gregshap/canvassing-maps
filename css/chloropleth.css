@@ -4,6 +4,10 @@
   margin-top: 0px;
 }
 
+#legend {
+  margin: 0 auto;
+}
+
 .map-text {
   text-align: center;
   margin-top: 80px;
@@ -14,7 +18,9 @@
 }
 
 .counties {
-  fill: none;
+  fill: rgb(235,235,235);
+  stroke: rgb(255,255,255);
+  stroke-linejoin: round;
 }
 
 body{
