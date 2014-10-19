@@ -22,7 +22,7 @@ var canvassMap;
       .attr("height", height);
 
 
-  var SOURCE_FILE = 'CanvassingMapData_20141010-20141012.csv';
+  var SOURCE_FILE = 'CanvassingMapData_20141017-20141019.csv';
 
 
   function getQueryVariable(queryStringParamTarget) {
@@ -50,7 +50,7 @@ var canvassMap;
 
 
   //This represents 'Hour 0'
-  var MAP_START_TIME = "2014-10-10 17:00:00";
+  var MAP_START_TIME = "2014-10-17 17:00:00";
   var MAP_START_TIME_PARSE_FORMAT = "YYYY-MM-DD HH:mm:ss";
   var mapStartMoment = moment(MAP_START_TIME, MAP_START_TIME_PARSE_FORMAT);
 
