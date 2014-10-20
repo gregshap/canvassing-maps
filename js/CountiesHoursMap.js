@@ -4,7 +4,7 @@ var canvassMap;
   var width = 960,
       height = 600;
 
-  var rateById = d3.map();
+  var rateById = {};
 
   var quantize = d3.scale.quantize()
       .domain([0, 9])
@@ -89,7 +89,7 @@ var canvassMap;
       .defer(d3.json, "../data/us.json")
       .defer(d3.csv, "../data/" + SOURCE_FILE, function(d) { 
                                               var rateLog = Math.log(d[colName]);
-                                              rateById.set(d[rowName], +rateLog); })
+                                              rateById[d[rowName]] = +rateLog; })
       .await(ready);
 
   function ready(error, us) {
@@ -102,7 +102,7 @@ var canvassMap;
         .data(topojson.feature(us, us.objects.counties).features)
       .enter().append("path")
         .attr("class", function(d) {
-                            return quantize(rateById.get(d[rowName]));
+                            return quantize(rateById[d[rowName]]);
                           })
         .attr("d", path);
 
