@@ -4,11 +4,15 @@ var canvassMap;
   var width = 960,
       height = 600;
 
-  var rateById = {};
+  var valueById = {};
 
   var quantize = d3.scale.quantize()
       .domain([0, 9])
       .range(d3.range(9).map(function(i) { return "q" + i + "-9"; }));
+
+  var thresholdize = d3.scale.threshold()
+      .domain([1,5,10,20,50,150,400,1000,3000,8000])
+      .range(d3.range(9).map(function(i) {return "q" + i + "-9"; }))
 
   var projection = d3.geo.albersUsa()
       .scale(1280)
@@ -89,12 +93,12 @@ var canvassMap;
       .defer(d3.json, "../data/us.json")
       .defer(d3.csv, "../data/" + SOURCE_FILE, function(d) { 
                                               var rateLog = Math.log(d[colName]);
-                                              rateById[d[rowName]] = +rateLog; })
+                                              valueById[d[rowName]] = +d[colName]; })
       .await(ready);
 
   function ready(error, us) {
 
-    console.log(rateById);
+    console.log(valueById);
 
     svg.append("g")
         .attr("class", "counties")
@@ -102,7 +106,7 @@ var canvassMap;
         .data(topojson.feature(us, us.objects.counties).features)
       .enter().append("path")
         .attr("class", function(d) {
-                            return quantize(rateById[d[rowName]]);
+                            return thresholdize(valueById[d[rowName]]);
                           })
         .attr("d", path);
 
