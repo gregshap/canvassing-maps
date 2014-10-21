@@ -4,6 +4,8 @@ var canvassMap;
   var width = 960,
       height = 600;
 
+  var bottomMargin = 100;
+
   var valueById = {};
 
   var quantize = d3.scale.quantize()
@@ -16,14 +18,14 @@ var canvassMap;
 
   var projection = d3.geo.albersUsa()
       .scale(1280)
-      .translate([width / 2, height / 2]);
+      .translate([width / 2, (height) / 2]);
 
   var path = d3.geo.path()
       .projection(projection);
 
   var svg = d3.select("#canvass-map").append("svg")
       .attr("width", width)
-      .attr("height", height);
+      .attr("height", height + bottomMargin);
 
 
   var SOURCE_FILE = 'CanvassingMapData_20141017-20141019.csv';
@@ -115,8 +117,38 @@ var canvassMap;
         .datum(topojson.mesh(us, us.objects.states, function(a, b) { return true; }))
         .attr("class", "states")
         .attr("d", path);
+
+ 
+  //Add Legend
+    var legendBlockHeight = 40;
+    var legendElementWidth = 80;
+    var legendLeftMargin = 40;
+
+      var legend = svg.selectAll("#legend")
+              .data(thresholdize.domain(), function(d) { return d; })
+              .enter().append("g")
+              .attr("class", "legend");
+
+          legend.append("rect")
+            .attr("x", function(d, i) { return legendLeftMargin + legendElementWidth * i; })
+            .attr("y", height + ( bottomMargin / 2 ) )
+            .attr("width", legendElementWidth)
+            .attr("height", legendBlockHeight / 2)
+            .attr("class", function(d, i) { return "q" + i + "-9";});
+
+          legend.append("text")
+            .attr("class", "mono")
+            .text(function(d) { return "≥ " + Math.round(d); })
+            .attr("x", function(d, i) { return legendLeftMargin + legendElementWidth * i; })
+            .attr("y", height + ( bottomMargin / 2 ) + legendBlockHeight);
+
+
   }
 
+
   d3.select(self.frameElement).style("height", height + "px");
+
+
+
   
 })(canvassMap || (canvassMap = {}));
