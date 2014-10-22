@@ -13,7 +13,7 @@ var canvassMap;
       .range(d3.range(9).map(function(i) { return "q" + i + "-9"; }));
 
   var thresholdize = d3.scale.threshold()
-      .domain([1,5,10,20,50,150,400,1000,3000,8000])
+      .domain([5,10,50,150,400,1000,2500,10000,300000])
       .range(d3.range(9).map(function(i) {return "q" + i + "-9"; }))
 
   var projection = d3.geo.albersUsa()
@@ -119,13 +119,17 @@ var canvassMap;
         .attr("d", path);
 
  
-  //Add Legend
+    //Add Legend
     var legendBlockHeight = 40;
     var legendElementWidth = 80;
     var legendLeftMargin = 40;
 
+    //Add a zero to the legend, and get rid of the top bound since we're showing >= numbers,
+    //nothing on the map will be > our top threshold value
+    var legendDomain = [0].concat(thresholdize.domain().slice(0,thresholdize.domain().length-1));
+
       var legend = svg.selectAll("#legend")
-              .data(thresholdize.domain(), function(d) { return d; })
+              .data(legendDomain, function(d) { return d; })
               .enter().append("g")
               .attr("class", "legend");
 
@@ -134,12 +138,12 @@ var canvassMap;
             .attr("y", height + ( bottomMargin / 2 ) )
             .attr("width", legendElementWidth)
             .attr("height", legendBlockHeight / 2)
-            .attr("class", function(d, i) { return "q" + i + "-9";});
+            .attr("class", function(d, i) { return "legend-q" + i + "-9";});
 
           legend.append("text")
             .attr("class", "mono")
             .text(function(d) { return "≥ " + Math.round(d); })
-            .attr("x", function(d, i) { return legendLeftMargin + legendElementWidth * i; })
+            .attr("x", function(d, i) { return legendLeftMargin + legendElementWidth * (i); })
             .attr("y", height + ( bottomMargin / 2 ) + legendBlockHeight);
 
 
