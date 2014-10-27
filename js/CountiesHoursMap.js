@@ -28,7 +28,7 @@ var canvassMap;
       .attr("height", height + bottomMargin);
 
 
-  var SOURCE_FILE = 'CanvassingMapData_20141017-20141019.csv';
+  var SOURCE_FILE = 'CanvassingMapData_20141024-20141026.csv';
 
 
   function getQueryVariable(queryStringParamTarget) {
