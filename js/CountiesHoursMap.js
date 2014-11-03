@@ -10,11 +10,11 @@ var canvassMap;
 
   var quantize = d3.scale.quantize()
       .domain([0, 9])
-      .range(d3.range(9).map(function(i) { return "q" + i + "-9"; }));
+      .range(d3.range(9).map(function(i) { return getClassNameForScaleLevel(i); } ));
 
   var thresholdize = d3.scale.threshold()
       .domain([5,10,50,150,400,1000,2500,10000,300000])
-      .range(d3.range(9).map(function(i) {return "q" + i + "-9"; }))
+      .range(d3.range(9).map(function(i) { return getClassNameForScaleLevel(i); }))
 
   var projection = d3.geo.albersUsa()
       .scale(1280)
@@ -30,6 +30,12 @@ var canvassMap;
 
   var SOURCE_FILE = 'CanvassingMapData_20141024-20141026.csv';
 
+
+  //Given an index representing the level on the chloropleth coloring scale,
+  // get the classname that should apply the css styling
+  function getClassNameForScaleLevel(scaleIndex) {
+    return "q" + scaleIndex + "-9";
+  }
 
   function getQueryVariable(queryStringParamTarget) {
       var query = window.location.search.substring(1);
@@ -138,7 +144,7 @@ var canvassMap;
             .attr("y", height + ( bottomMargin / 2 ) )
             .attr("width", legendElementWidth)
             .attr("height", legendBlockHeight / 2)
-            .attr("class", function(d, i) { return "legend-q" + i + "-9";});
+            .attr("class", function(d,i) { return getClassNameForScaleLevel(i); });
 
           legend.append("text")
             .attr("class", "mono")
