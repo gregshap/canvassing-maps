@@ -98,8 +98,8 @@ var canvassMap;
 
 
   queue()
-      .defer(d3.json, "../data/us.json")
-      .defer(d3.csv, "../data/" + SOURCE_FILE, function(d) { 
+      .defer(d3.json, "data/us.json")
+      .defer(d3.csv, "data/" + SOURCE_FILE, function(d) { 
                                               var rateLog = Math.log(d[colName]);
                                               valueById[d[rowName]] = +d[colName]; })
       .await(ready);
